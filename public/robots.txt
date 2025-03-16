@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fosbrader.github.io/brad-playground/sitemap.xml 

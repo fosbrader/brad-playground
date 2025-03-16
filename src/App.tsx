@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import GradientGenerator from './tools/gradient/GradientGenerator';
+import RouteTracker from './components/RouteTracker';
 import React from 'react';
 import './App.css';
 
@@ -19,26 +20,29 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route 
-        path="/" 
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/tools/gradient" 
-        element={
-          <ProtectedRoute>
-            <GradientGenerator />
-          </ProtectedRoute>
-        } 
-      />
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+    <>
+      <RouteTracker />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route 
+          path="/" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/tools/gradient" 
+          element={
+            <ProtectedRoute>
+              <GradientGenerator />
+            </ProtectedRoute>
+          } 
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
   );
 }
 
