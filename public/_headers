@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.counter.dev https://*.counter.dev; connect-src 'self' https://*.counter.dev; img-src 'self' https://*.counter.dev data:; font-src 'self' data:
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.counter.dev https://*.counter.dev http://cdn.counter.dev http://*.counter.dev; connect-src 'self' https://*.counter.dev http://*.counter.dev; img-src 'self' https://*.counter.dev http://*.counter.dev data:; font-src 'self' data:
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer-when-downgrade 

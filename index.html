@@ -4,9 +4,40 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.counter.dev https://*.counter.dev http://cdn.counter.dev http://*.counter.dev; connect-src 'self' https://*.counter.dev http://*.counter.dev; img-src 'self' https://*.counter.dev http://*.counter.dev data:; font-src 'self' data:">
     <title>Brad's Playground</title>
     
-    <!-- Analytics disabled - counter.dev appears to be inactive or unreachable -->
+    <!-- Counter.dev Analytics -->
+    <script>
+      // Fix for counter.dev implementation
+      document.addEventListener('DOMContentLoaded', function() {
+        // Using https instead of http might help with loading issues
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://cdn.counter.dev/script.js';
+        script.setAttribute('data-id', '757bceaa-78cc-4493-808d-010a1f6d38c5');
+        script.setAttribute('data-utcoffset', '-7');
+        document.head.appendChild(script);
+        
+        // Track SPA page changes
+        let lastPath = location.pathname;
+        setInterval(function() {
+          if (location.pathname !== lastPath) {
+            lastPath = location.pathname;
+            // Force a new page view count
+            var newScript = document.createElement('script');
+            newScript.async = true;
+            newScript.src = 'https://cdn.counter.dev/script.js?page=' + 
+                           encodeURIComponent(location.pathname) + 
+                           '&t=' + Date.now();
+            newScript.setAttribute('data-id', '757bceaa-78cc-4493-808d-010a1f6d38c5');
+            newScript.setAttribute('data-utcoffset', '-7');
+            document.head.appendChild(newScript);
+            console.log('Counter.dev page view tracked for:', location.pathname);
+          }
+        }, 300);
+      });
+    </script>
     
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
