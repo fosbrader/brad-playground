@@ -8,69 +8,175 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Helper cookie functions
+const setCookie = (name: string, value: string, days: number = 7) => {
+  try {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "; expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + expires + "; path=/";
+    console.log('Cookie set:', name);
+  } catch (e) {
+    console.error('Error setting cookie:', e);
+  }
+};
+
+const getCookie = (name: string) => {
+  try {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+};
+
+const deleteCookie = (name: string) => {
+  try {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  } catch (e) {
+    console.error('Error deleting cookie:', e);
+  }
+};
+
 // Helper function to safely check storage
 const checkStorage = (key: string) => {
+  console.log('Checking storage for key:', key);
+  
   try {
-    // Try sessionStorage first (persists across page refreshes but not tab/browser closes)
-    const sessionValue = sessionStorage.getItem(key);
-    if (sessionValue === 'true') return true;
+    // Check cookie first
+    const cookieValue = getCookie(key);
+    if (cookieValue === 'true') {
+      console.log('Found auth in cookie');
+      return true;
+    }
     
-    // Fallback to localStorage (persists indefinitely)
+    // Try sessionStorage
+    const sessionValue = sessionStorage.getItem(key);
+    console.log('SessionStorage value:', sessionValue);
+    
+    if (sessionValue === 'true') {
+      console.log('Found auth in sessionStorage');
+      return true;
+    }
+    
+    // Fallback to localStorage
     const localValue = localStorage.getItem(key);
+    console.log('LocalStorage value:', localValue);
+    
     if (localValue === 'true') {
-      // If found in localStorage but not sessionStorage, update sessionStorage
+      // If found in localStorage but not in cookie or sessionStorage, update them
+      console.log('Found auth in localStorage, updating other storage methods');
       try {
+        setCookie(key, 'true');
         sessionStorage.setItem(key, 'true');
       } catch (e) {
-        console.warn('SessionStorage not available');
+        console.warn('Error updating storage:', e);
       }
       return true;
     }
     
+    console.log('Auth not found in any storage method');
     return false;
   } catch (e) {
-    console.warn('Storage access denied:', e);
+    console.error('Storage access error:', e);
     return false;
   }
 };
 
 // Helper function to safely set storage
 const setStorage = (key: string, value: string) => {
+  console.log('Setting storage for key:', key, 'with value:', value);
+  
   try {
+    // Set in all storage methods for redundancy
+    setCookie(key, value);
     sessionStorage.setItem(key, value);
     localStorage.setItem(key, value);
   } catch (e) {
-    console.warn('Storage access denied:', e);
+    console.warn('Error setting storage:', e);
+    
+    // Try to set at least in cookies if other methods fail
+    try {
+      setCookie(key, value);
+    } catch (cookieError) {
+      console.error('All storage methods failed:', cookieError);
+    }
   }
 };
 
 // Helper function to safely remove from storage
 const removeStorage = (key: string) => {
+  console.log('Removing storage for key:', key);
+  
   try {
+    deleteCookie(key);
     sessionStorage.removeItem(key);
     localStorage.removeItem(key);
   } catch (e) {
-    console.warn('Storage access denied:', e);
+    console.warn('Error removing from storage:', e);
+    
+    // Try to remove at least from cookies if other methods fail
+    try {
+      deleteCookie(key);
+    } catch (cookieError) {
+      console.error('All storage removal methods failed:', cookieError);
+    }
   }
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  // Check storage on initial load
+  // Check auth status on initial load
   useEffect(() => {
-    const authStatus = checkStorage('isAuthenticated');
-    if (authStatus) {
-      setIsAuthenticated(true);
-    }
+    const checkAuth = () => {
+      // Check cookie first
+      const cookieAuth = getCookie('isAuthenticated');
+      if (cookieAuth === 'true') {
+        setIsAuthenticated(true);
+        return;
+      }
+      
+      // If cookie auth failed, try localStorage as fallback
+      try {
+        const localAuth = localStorage.getItem('isAuthenticated');
+        if (localAuth === 'true') {
+          setIsAuthenticated(true);
+          // Set cookie for future auth checks
+          setCookie('isAuthenticated', 'true');
+        }
+      } catch (e) {
+        // Local storage might fail in some browsers/contexts
+      }
+    };
+    
+    // Run immediately and again after a small delay
+    checkAuth();
+    const timeoutId = setTimeout(checkAuth, 300);
+    
+    return () => clearTimeout(timeoutId);
   }, []);
 
   const login = (password: string) => {
-    // Simple password check - in a real app, you'd want to use a more secure approach
-    // The password is stored in client-side code, so this is not truly secure
     if (password === 'mySecretPassword') {
       setIsAuthenticated(true);
-      setStorage('isAuthenticated', 'true');
+      
+      // Set in both cookie and localStorage for redundancy
+      setCookie('isAuthenticated', 'true');
+      try {
+        localStorage.setItem('isAuthenticated', 'true');
+      } catch (e) {
+        // Ignore localStorage errors
+      }
+      
       return true;
     }
     return false;
@@ -78,7 +184,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setIsAuthenticated(false);
-    removeStorage('isAuthenticated');
+    deleteCookie('isAuthenticated');
+    try {
+      localStorage.removeItem('isAuthenticated');
+    } catch (e) {
+      // Ignore localStorage errors
+    }
   };
 
   return (
