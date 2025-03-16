@@ -45,10 +45,10 @@ const tools = [
     category: 'Image Tools'
   },
   {
-    id: 'text-on-screen',
-    name: 'Text on Screen Generator',
+    id: 'text',
+    name: 'Text Generator',
     description: 'Create images with custom text overlays',
-    path: '/tools/text-on-screen',
+    path: '/tools/text',
     icon: <TextIcon />,
     category: 'Image Tools'
   },
@@ -176,7 +176,7 @@ export default function Dashboard() {
               </div>
             </Link>
             
-            <Link to="/tools/text-on-screen" className="card">
+            <Link to="/tools/text" className="card">
               <div style={{ position: 'relative' }}>
                 <div style={{ marginBottom: 'var(--space-2)' }}>
                   <TextIcon />
