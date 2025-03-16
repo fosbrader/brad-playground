@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/brad-playground/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.counter.dev https://*.counter.dev http://cdn.counter.dev http://*.counter.dev; connect-src 'self' https://*.counter.dev http://*.counter.dev; img-src 'self' https://*.counter.dev http://*.counter.dev data:; font-src 'self' data:">
     <title>Brad's Playground</title>
     
-    <!-- Counter.dev Analytics (simplified) -->
+    <!-- Counter.dev Analytics -->
     <script>
-      // Simplified counter.dev implementation
+      // Fix for counter.dev implementation
       document.addEventListener('DOMContentLoaded', function() {
-        // Load the counter script dynamically
+        // Using https instead of http might help with loading issues
         var script = document.createElement('script');
         script.async = true;
         script.src = 'https://cdn.counter.dev/script.js';
