@@ -1,19 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from '../components/Sidebar';
 
-// SVG Icons as components
-const DashboardIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="9" />
-    <rect x="14" y="3" width="7" height="5" />
-    <rect x="14" y="12" width="7" height="9" />
-    <rect x="3" y="16" width="7" height="5" />
-  </svg>
-);
-
+// SVG Icons as components - remove unused ones
 const GradientIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10" />
@@ -44,16 +33,6 @@ const SpeechIcon = () => (
     <line x1="8" y1="23" x2="16" y2="23" />
   </svg>
 );
-
-// Define a type for tool entries
-type Tool = {
-  id: string;
-  name: string;
-  description: string;
-  path: string;
-  icon: React.ReactNode;
-  category: string;
-};
 
 // Define your tools
 const tools = [

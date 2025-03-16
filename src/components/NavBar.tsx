@@ -2,16 +2,6 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-// Define a type for tool entries
-type Tool = {
-  id: string;
-  name: string;
-  description: string;
-  path: string;
-  icon: string;
-  category: string;
-};
-
 // Define your tools
 const tools = [
   {

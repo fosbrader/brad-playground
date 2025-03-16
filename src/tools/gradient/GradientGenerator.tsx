@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Sidebar from '../../components/Sidebar';
 
@@ -149,11 +148,10 @@ export default function GradientGenerator() {
       // Add color stops with proper blending
       const gradientCssString = getGradientCssString();
       const colorStopsRegex = /([#a-zA-Z0-9(),.]+)\s+(\d+(?:\.\d+)?)%/g;
-      let match;
       
       // Parse the CSS string to get color stops
       const matches = Array.from(gradientCssString.matchAll(colorStopsRegex));
-      matches.forEach((match, i) => {
+      matches.forEach((match) => {
         const color = match[1];
         const position = parseFloat(match[2]) / 100;
         gradient.addColorStop(position, color);
@@ -161,7 +159,7 @@ export default function GradientGenerator() {
       
       // If no matches found, add color stops manually
       if (matches.length === 0) {
-        colorStops.forEach((stop, i) => {
+        colorStops.forEach((stop) => {
           let position;
           if (direction === 'to right' || direction === 'to left') {
             position = stop.x / 100;
