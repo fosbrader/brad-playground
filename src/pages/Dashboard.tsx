@@ -130,7 +130,7 @@ export default function Dashboard() {
                 <div className="card-title">Visitors</div>
                 <div className="card-badge">Annual</div>
               </div>
-              <div className="stat-value">24,532</div>
+              <div className="stat-value">0</div>
               <div className="stat-label">
                 Since last week
                 <span className="stat-change stat-change-positive">+14%</span>
@@ -142,7 +142,7 @@ export default function Dashboard() {
                 <div className="card-title">Activity</div>
                 <div className="card-badge">Annual</div>
               </div>
-              <div className="stat-value">63,200</div>
+              <div className="stat-value">0</div>
               <div className="stat-label">
                 Since last week
                 <span className="stat-change stat-change-negative">-12%</span>
@@ -154,7 +154,7 @@ export default function Dashboard() {
                 <div className="card-title">Real-Time</div>
                 <div className="card-badge card-badge-primary">Monthly</div>
               </div>
-              <div className="stat-value">1,320</div>
+              <div className="stat-value">0</div>
               <div className="stat-label">
                 Since last week
                 <span className="stat-change stat-change-negative">-18%</span>
@@ -166,7 +166,7 @@ export default function Dashboard() {
                 <div className="card-title">Bounce</div>
                 <div className="card-badge card-badge-success">Yearly</div>
               </div>
-              <div className="stat-value">12,364</div>
+              <div className="stat-value">0</div>
               <div className="stat-label">
                 Since last week
                 <span className="stat-change stat-change-positive">+27%</span>
