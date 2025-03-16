@@ -8,13 +8,59 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Helper function to safely check storage
+const checkStorage = (key: string) => {
+  try {
+    // Try sessionStorage first (persists across page refreshes but not tab/browser closes)
+    const sessionValue = sessionStorage.getItem(key);
+    if (sessionValue === 'true') return true;
+    
+    // Fallback to localStorage (persists indefinitely)
+    const localValue = localStorage.getItem(key);
+    if (localValue === 'true') {
+      // If found in localStorage but not sessionStorage, update sessionStorage
+      try {
+        sessionStorage.setItem(key, 'true');
+      } catch (e) {
+        console.warn('SessionStorage not available');
+      }
+      return true;
+    }
+    
+    return false;
+  } catch (e) {
+    console.warn('Storage access denied:', e);
+    return false;
+  }
+};
+
+// Helper function to safely set storage
+const setStorage = (key: string, value: string) => {
+  try {
+    sessionStorage.setItem(key, value);
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn('Storage access denied:', e);
+  }
+};
+
+// Helper function to safely remove from storage
+const removeStorage = (key: string) => {
+  try {
+    sessionStorage.removeItem(key);
+    localStorage.removeItem(key);
+  } catch (e) {
+    console.warn('Storage access denied:', e);
+  }
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  // Check sessionStorage on initial load
+  // Check storage on initial load
   useEffect(() => {
-    const authStatus = sessionStorage.getItem('isAuthenticated');
-    if (authStatus === 'true') {
+    const authStatus = checkStorage('isAuthenticated');
+    if (authStatus) {
       setIsAuthenticated(true);
     }
   }, []);
@@ -24,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // The password is stored in client-side code, so this is not truly secure
     if (password === 'mySecretPassword') {
       setIsAuthenticated(true);
-      sessionStorage.setItem('isAuthenticated', 'true');
+      setStorage('isAuthenticated', 'true');
       return true;
     }
     return false;
@@ -32,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('isAuthenticated');
+    removeStorage('isAuthenticated');
   };
 
   return (

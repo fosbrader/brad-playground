@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { APP_VERSION } from '../config/version';
 
 // SVG Icons as components
 const DashboardIcon = () => (
@@ -61,6 +62,7 @@ export default function Sidebar() {
           <span style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>B</span>
           <span style={{ fontSize: '0.85rem' }}>BRAD'S TOOLS</span>
         </Link>
+        <div className="sidebar-version">Version {APP_VERSION}</div>
       </div>
 
       <div className="sidebar-nav" style={{ marginBottom: 'var(--space-5)' }}>

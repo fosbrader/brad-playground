@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { APP_VERSION } from '../config/version';
 
 export default function Login() {
   const [password, setPassword] = useState('');
@@ -115,6 +116,13 @@ export default function Login() {
               color: 'var(--color-text-tertiary)'
             }}>
               A collection of useful web development utilities
+            </p>
+            <p style={{ 
+              fontSize: 'var(--font-size-xs)',
+              color: 'var(--color-text-tertiary)',
+              marginTop: 'var(--space-2)'
+            }}>
+              Version {APP_VERSION}
             </p>
           </div>
         </div>

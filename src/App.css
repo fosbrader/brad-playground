@@ -500,3 +500,13 @@ h3 {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* Sidebar version styling */
+.sidebar-version {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  padding: 0 var(--space-4);
+  margin-top: var(--space-1);
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
