@@ -12,16 +12,25 @@ export default function RouteTracker() {
   useEffect(() => {
     // Track page view when location changes
     try {
-      // Send page view event to counter.dev
-      // counter.dev doesn't have a standard API for SPAs,
-      // but this simulated page load helps in some cases
+      // Force a reload of the counter script with the new page path
       if (typeof window !== 'undefined') {
-        // Add cache buster to avoid caching issues
-        const url = `${window.location.pathname}?cb=${Date.now()}`;
-        fetch(url, { method: 'HEAD', mode: 'no-cors' }).catch(() => {});
+        // This is a fallback to ensure tracking happens if the script in index.html fails
+        const counterScript = document.createElement('script');
+        counterScript.async = true;
+        counterScript.src = `https://cdn.counter.dev/script.js?page=${encodeURIComponent(location.pathname)}&t=${Date.now()}`;
+        counterScript.setAttribute('data-id', '757bceaa-78cc-4493-808d-010a1f6d38c5');
+        counterScript.setAttribute('data-utcoffset', '-7');
+        document.head.appendChild(counterScript);
         
         // Log for debugging
-        console.log('Page view tracked:', window.location.pathname);
+        console.log('Page view tracked from React component:', location.pathname);
+        
+        // Remove the script after a short delay to prevent cluttering the DOM
+        setTimeout(() => {
+          if (counterScript.parentNode) {
+            counterScript.parentNode.removeChild(counterScript);
+          }
+        }, 2000);
       }
     } catch (error) {
       console.error('Error tracking page view:', error);
