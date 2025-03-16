@@ -90,48 +90,86 @@ export default function Dashboard() {
       <div className="main-content">
         {/* Header */}
         <header className="navbar">
-          <div>
-            <h1 className="navbar-title" style={{ marginBottom: 'var(--space-2)' }}>Pinned Tools</h1>
-            <div className="navbar-welcome">Welcome back, Brad! We've missed you. 👋</div>
+          <div className="navbar-search" style={{ 
+            width: '280px',
+            backgroundColor: 'rgba(36, 48, 77, 0.5)',
+          }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 'var(--space-2)', opacity: 0.5 }}>
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Search tools..."
+              className="search-input"
+            />
           </div>
           
-          <div className="navbar-links">
-            <div className="navbar-search" style={{ width: '280px' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 'var(--space-2)', opacity: 0.5 }}>
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input 
-                type="text" 
-                placeholder="Search topics..."
-                className="search-input"
-              />
+          <div style={{ flex: 1 }}></div>
+          
+          <div className="navbar-links" style={{ 
+            display: 'flex',
+            alignItems: 'center',
+            gap: 'var(--space-4)',
+            justifyContent: 'flex-end'
+          }}>
+            <div style={{ 
+              fontSize: 'var(--font-size-sm)',
+              color: 'var(--color-text-tertiary)',
+              opacity: 0.7
+            }}>
+              {currentDate}
             </div>
-            
-            <button className="button-today">
-              Today: {currentDate}
-            </button>
             
             <button
               onClick={logout}
-              className="button button-red"
+              className="icon-button"
+              style={{
+                backgroundColor: 'rgba(30, 41, 59, 0.7)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: 'var(--radius-md)',
+                padding: 'var(--space-2)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+                width: '40px',
+                height: '40px',
+                color: 'var(--color-text-primary)'
+              }}
             >
-              Sign Out
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
             </button>
           </div>
         </header>
 
         {/* Content */}
-        <main className="content">
+        <main className="content" style={{ paddingTop: 'var(--space-8)' }}>
+          <div>
+            <h1 className="navbar-title" style={{ marginBottom: 'var(--space-2)' }}>Pinned Tools</h1>
+            <div className="navbar-welcome">Welcome back, Brad! We've missed you. 👋</div>
+          </div>
+
           {/* Pinned Tools Section */}
-          <div className="dashboard-grid grid-4">
+          <div className="dashboard-grid grid-4" style={{ marginTop: 'var(--space-8)' }}>
             <Link to="/tools/gradient" className="card">
-              <div className="card-header">
+              <div style={{ position: 'relative' }}>
+                <div style={{ marginBottom: 'var(--space-2)' }}>
+                  <GradientIcon />
+                </div>
                 <div className="card-title">Gradient Generator</div>
-                <div className="card-badge">Image Tool</div>
-              </div>
-              <div className="stat-value">
-                <GradientIcon />
+                <div className="card-badge" style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0
+                }}>Image Tool</div>
               </div>
               <div className="stat-label">
                 Create beautiful CSS gradients with a visual editor
@@ -139,12 +177,16 @@ export default function Dashboard() {
             </Link>
             
             <Link to="/tools/text-on-screen" className="card">
-              <div className="card-header">
+              <div style={{ position: 'relative' }}>
+                <div style={{ marginBottom: 'var(--space-2)' }}>
+                  <TextIcon />
+                </div>
                 <div className="card-title">Text Generator</div>
-                <div className="card-badge">Image Tool</div>
-              </div>
-              <div className="stat-value">
-                <TextIcon />
+                <div className="card-badge" style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0
+                }}>Image Tool</div>
               </div>
               <div className="stat-label">
                 Create images with custom text overlays
@@ -152,12 +194,16 @@ export default function Dashboard() {
             </Link>
             
             <Link to="/tools/translator" className="card">
-              <div className="card-header">
+              <div style={{ position: 'relative' }}>
+                <div style={{ marginBottom: 'var(--space-2)' }}>
+                  <TranslateIcon />
+                </div>
                 <div className="card-title">Translator</div>
-                <div className="card-badge card-badge-primary">AI Tool</div>
-              </div>
-              <div className="stat-value">
-                <TranslateIcon />
+                <div className="card-badge card-badge-primary" style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0
+                }}>AI Tool</div>
               </div>
               <div className="stat-label">
                 Translate text between multiple languages
@@ -165,12 +211,16 @@ export default function Dashboard() {
             </Link>
             
             <Link to="/tools/text-to-speech" className="card">
-              <div className="card-header">
+              <div style={{ position: 'relative' }}>
+                <div style={{ marginBottom: 'var(--space-2)' }}>
+                  <SpeechIcon />
+                </div>
                 <div className="card-title">Text to Speech</div>
-                <div className="card-badge card-badge-primary">AI Tool</div>
-              </div>
-              <div className="stat-value">
-                <SpeechIcon />
+                <div className="card-badge card-badge-primary" style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0
+                }}>AI Tool</div>
               </div>
               <div className="stat-label">
                 Convert text to natural-sounding speech
@@ -183,7 +233,7 @@ export default function Dashboard() {
             <div key={category}>
               <h2 style={{ marginTop: 'var(--space-6)' }}>{category}</h2>
               
-              <div className="grid grid-3">
+              <div className="grid grid-5" style={{ gap: 'var(--space-3)' }}>
                 {tools
                   .filter(tool => tool.category === category)
                   .map((tool) => (
@@ -191,12 +241,22 @@ export default function Dashboard() {
                       key={tool.id} 
                       to={tool.path}
                       className="tool-card"
+                      style={{
+                        padding: 'var(--space-3)',
+                      }}
                     >
-                      <div className="tool-card-icon">
+                      <div style={{ 
+                        marginBottom: 'var(--space-2)',
+                      }}>
                         {tool.icon}
                       </div>
-                      <div className="tool-card-title">{tool.name}</div>
-                      <div className="tool-card-description">{tool.description}</div>
+                      <div className="tool-card-title" style={{ 
+                        fontSize: 'var(--font-size-md)',
+                        marginBottom: 'var(--space-1)'
+                      }}>{tool.name}</div>
+                      <div className="tool-card-description" style={{
+                        fontSize: 'var(--font-size-xs)'
+                      }}>{tool.description}</div>
                     </Link>
                   ))}
               </div>

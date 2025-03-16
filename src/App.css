@@ -32,6 +32,7 @@
   --space-5: 1.5rem;    /* 24px */
   --space-6: 2rem;      /* 32px */
   --space-8: 3rem;      /* 48px */
+  --space-12: 4rem;     /* 64px */
 
   /* Border radius */
   --radius-sm: 0.25rem;
@@ -175,13 +176,14 @@ body {
 
 /* Navbar/Header */
 .navbar {
+  padding: var(--space-4) var(--space-6);
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: var(--space-6) var(--space-6) var(--space-4);
+  align-items: center;
   position: relative;
   z-index: 10;
   background-color: transparent;
+  min-height: 80px;
 }
 
 .navbar-title {
@@ -212,12 +214,19 @@ body {
 }
 
 .search-input {
-  background: transparent;
+  background: none;
   border: none;
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   font-size: var(--font-size-sm);
   width: 100%;
+}
+
+.search-input:focus {
   outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--color-text-tertiary);
 }
 
 .button-today {
@@ -243,20 +252,21 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  text-decoration: none;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(30, 41, 59, 0.9);
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: var(--space-4);
+  position: relative;
 }
 
 .card-title {
@@ -314,7 +324,7 @@ body {
 .stat-label {
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
-  text-align: center;
+  text-align: left;
 }
 
 .stat-change {
@@ -337,25 +347,24 @@ body {
   color: var(--color-text-danger);
 }
 
+/* Tool cards */
 .tool-card {
   background-color: rgba(30, 41, 59, 0.7);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-md);
-  padding: var(--space-5);
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: var(--space-3);
+  transition: transform 0.2s ease, background-color 0.2s ease;
   height: 100%;
   text-decoration: none;
-  color: inherit;
   display: flex;
   flex-direction: column;
 }
 
 .tool-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(30, 41, 59, 0.9);
 }
 
 .tool-card-icon {
@@ -371,13 +380,14 @@ body {
 }
 
 .tool-card-title {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
   font-weight: 600;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
+  color: var(--color-text-primary);
 }
 
 .tool-card-description {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
 }
 
@@ -515,6 +525,10 @@ h3 {
   gap: var(--space-5);
 }
 
+.grid-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
 @media (min-width: 768px) {
   .grid-2 {
     grid-template-columns: repeat(2, 1fr);
@@ -539,4 +553,28 @@ h3 {
   margin-top: var(--space-1);
   margin-bottom: var(--space-4);
   text-align: center;
+}
+
+.icon-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(30, 41, 59, 0.9);
+}
+
+.icon-button:active {
+  transform: translateY(0);
+}
+
+/* Remove any color transitions */
+.tool-card, .card {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.tool-card-title, .card-title, .tool-card-description, .stat-label {
+  color: var(--color-text-primary);
+}
+
+.tool-card-description, .stat-label {
+  color: var(--color-text-secondary);
 }
