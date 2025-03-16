@@ -754,383 +754,287 @@ animation: gradientAnimation ${animationSpeed}s ease infinite;
 
   return (
     <div className="app-container">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main content */}
+      
       <div className="main-content">
         {/* Header */}
         <header className="navbar">
-          <div>
-            <div className="navbar-title">Gradient Generator</div>
-            <div className="navbar-welcome">Create beautiful gradients with a visual editor</div>
+          <div className="navbar-search" style={{ 
+            width: '280px',
+            backgroundColor: 'rgba(36, 48, 77, 0.5)',
+          }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 'var(--space-2)', opacity: 0.5 }}>
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Search tools..."
+              className="search-input"
+            />
           </div>
           
+          <div style={{ flex: 1 }}></div>
+          
           <div className="navbar-links">
-            <div className="navbar-search">
-              <input 
-                type="text" 
-                placeholder="Search tools..."
-                className="search-input"
-              />
-            </div>
-            
-            <div className="navbar-date">
-              Today: {currentDate}
+            <div style={{ 
+              fontSize: 'var(--font-size-sm)',
+              color: 'var(--color-text-tertiary)',
+              opacity: 0.7
+            }}>
+              {currentDate}
             </div>
             
             <button
               onClick={logout}
-              className="button button-red"
+              className="icon-button"
+              style={{
+                backgroundColor: 'rgba(30, 41, 59, 0.7)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: 'var(--radius-md)',
+                padding: 'var(--space-2)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+                width: '40px',
+                height: '40px',
+                color: 'var(--color-text-primary)'
+              }}
             >
-              Sign Out
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
             </button>
           </div>
         </header>
 
         {/* Content */}
-        <main className="content">
-          <div className="grid grid-2" style={{ marginTop: 'var(--space-4)' }}>
+        <main className="content" style={{ paddingTop: 'var(--space-8)' }}>
+          <div>
+            <h1 className="navbar-title">Gradient Generator</h1>
+            <div className="navbar-welcome">Create beautiful CSS gradients with a visual editor</div>
+          </div>
+
+          <div className="grid grid-2" style={{ marginTop: 'var(--space-8)', gap: 'var(--space-6)' }}>
+            {/* Preview Section */}
+            <div className="card" style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
+              <div
+                ref={previewRef}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  background: getPreviewBackground(),
+                  transition: isAnimated ? `background ${animationSpeed}s ${animationType}` : 'none',
+                  borderRadius: 'var(--radius-md)'
+                }}
+              />
+            </div>
+
+            {/* Controls Section */}
             <div className="card">
-              <div className="card-header">
-                <div className="card-title">Gradient Controls</div>
-              </div>
-              
-              <div style={{ marginTop: 'var(--space-5)' }}>
-                <div style={{ marginBottom: 'var(--space-5)' }}>
-                  <h3 style={{ marginBottom: 'var(--space-3)' }}>Gradient Type</h3>
-                  <select
-                    className="input"
-                    value={gradientType}
-                    onChange={(e) => setGradientType(e.target.value as GradientType)}
-                  >
-                    {gradientTypes.map((type) => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
-                      </option>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+                {/* Gradient Type */}
+                <div>
+                  <h3>Gradient Type</h3>
+                  <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
+                    {['linear', 'radial', 'conic'].map(type => (
+                      <button
+                        key={type}
+                        onClick={() => setGradientType(type as GradientType)}
+                        className={`button ${gradientType === type ? '' : 'button-secondary'}`}
+                        style={{ flex: 1 }}
+                      >
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
+                {/* Direction (for linear gradients) */}
                 {gradientType === 'linear' && (
-                  <div style={{ marginBottom: 'var(--space-5)' }}>
-                    <h3 style={{ marginBottom: 'var(--space-3)' }}>Direction</h3>
-                    <select 
-                      className="input"
-                      value={direction}
-                      onChange={(e) => setDirection(e.target.value)}
-                    >
-                      {directions.map((dir) => (
-                        <option key={dir.value} value={dir.value}>
-                          {dir.label}
-                        </option>
+                  <div>
+                    <h3>Direction</h3>
+                    <div style={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: 'repeat(4, 1fr)', 
+                      gap: 'var(--space-2)',
+                      marginTop: 'var(--space-2)'
+                    }}>
+                      {[
+                        'to right',
+                        'to left',
+                        'to bottom',
+                        'to top',
+                        '45deg',
+                        '135deg',
+                        '225deg',
+                        '315deg'
+                      ].map(dir => (
+                        <button
+                          key={dir}
+                          onClick={() => setDirection(dir)}
+                          className={`button ${direction === dir ? '' : 'button-secondary'}`}
+                        >
+                          {dir}
+                        </button>
                       ))}
-                    </select>
+                    </div>
                   </div>
                 )}
-                
-                <div style={{ marginBottom: 'var(--space-5)' }}>
-                  <h3 style={{ marginBottom: 'var(--space-3)' }}>Preset Colors</h3>
-                  <select 
-                    className="input"
-                    value={selectedPreset}
-                    onChange={(e) => loadPreset(e.target.value)}
-                  >
-                    <option value="default">Default Blue/Purple</option>
-                    <option value="sunset">Sunset</option>
-                    <option value="ocean">Ocean</option>
-                    <option value="forest">Forest</option>
-                    <option value="berry">Berry</option>
-                    <option value="fire">Fire</option>
-                    <option value="midnight">Midnight</option>
-                    <option value="cosmic">Cosmic (3 colors)</option>
-                    <option value="rainbow">Rainbow (5 colors)</option>
-                    <option value="corner">Corner Gradient</option>
-                    <option value="radialBurst">Radial Burst</option>
-                    <option value="custom" disabled={selectedPreset !== 'custom'}>Custom</option>
-                  </select>
-                </div>
-              
-                <div style={{ marginBottom: 'var(--space-5)' }}>
-                  <h3 style={{ marginBottom: 'var(--space-3)' }}>Colors</h3>
-                  {colorStops.map((colorStop, index) => (
-                    <div 
-                      key={index} 
-                      style={{ 
-                        marginBottom: 'var(--space-4)', 
-                        padding: 'var(--space-3)', 
-                        backgroundColor: 'var(--color-bg-tertiary)', 
-                        borderRadius: 'var(--radius-md)' 
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-3)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                          <input
-                            type="color"
-                            value={colorStop.color}
-                            onChange={(e) => handleColorChange(index, e.target.value)}
-                            style={{ width: '3rem', height: '2rem', padding: '0', border: 'none', background: 'none' }}
-                          />
-                          <input
-                            type="text"
-                            value={colorStop.color}
-                            onChange={(e) => handleColorChange(index, e.target.value)}
-                            className="input"
-                            style={{ width: '8rem' }}
-                          />
-                        </div>
+
+                {/* Color Stops */}
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
+                    <h3>Colors</h3>
+                    <button onClick={addColor} className="button">Add Color</button>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+                    {colorStops.map((stop, index) => (
+                      <div key={index} style={{ display: 'flex', gap: 'var(--space-2)', alignItems: 'center' }}>
+                        <input
+                          type="color"
+                          value={stop.color}
+                          onChange={(e) => handleColorChange(index, e.target.value)}
+                          style={{ width: '48px', height: '48px', padding: '0', border: 'none', background: 'none' }}
+                        />
+                        <input
+                          type="number"
+                          value={stop.x}
+                          onChange={(e) => handlePositionChange(index, 'x', parseFloat(e.target.value))}
+                          className="input"
+                          style={{ width: '80px' }}
+                          min="0"
+                          max="100"
+                        />
+                        <input
+                          type="number"
+                          value={stop.y}
+                          onChange={(e) => handlePositionChange(index, 'y', parseFloat(e.target.value))}
+                          className="input"
+                          style={{ width: '80px' }}
+                          min="0"
+                          max="100"
+                        />
                         {colorStops.length > 2 && (
-                          <button 
+                          <button
                             onClick={() => removeColor(index)}
                             className="button button-red"
-                            style={{ padding: 'var(--space-1) var(--space-2)', marginLeft: 'auto' }}
+                            style={{ padding: 'var(--space-2)' }}
                           >
-                            ✕
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <line x1="18" y1="6" x2="6" y2="18"></line>
+                              <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
                           </button>
                         )}
                       </div>
-                      <div style={{ marginBottom: 'var(--space-3)' }}>
-                        <label style={{ display: 'block', marginBottom: 'var(--space-1)', fontSize: 'var(--font-size-sm)' }}>
-                          X Position: {colorStop.x.toFixed(1)}%
-                        </label>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Presets */}
+                <div>
+                  <h3>Presets</h3>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', 
+                    gap: 'var(--space-2)',
+                    marginTop: 'var(--space-2)'
+                  }}>
+                    {Object.keys(presets).map(preset => (
+                      <button
+                        key={preset}
+                        onClick={() => loadPreset(preset)}
+                        className={`button ${selectedPreset === preset ? '' : 'button-secondary'}`}
+                      >
+                        {preset.charAt(0).toUpperCase() + preset.slice(1)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Animation Controls */}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                    <h3>Animation</h3>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={isAnimated}
+                        onChange={(e) => setIsAnimated(e.target.checked)}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </div>
+                  {isAnimated && (
+                    <div style={{ 
+                      display: 'grid', 
+                      gridTemplateColumns: '1fr 1fr', 
+                      gap: 'var(--space-4)',
+                      marginTop: 'var(--space-2)'
+                    }}>
+                      <div>
+                        <label className="text-sm">Speed (seconds)</label>
                         <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          step="0.1"
-                          value={colorStop.x}
-                          onChange={(e) => handlePositionChange(index, 'x', parseFloat(e.target.value))}
+                          type="number"
+                          value={animationSpeed}
+                          onChange={(e) => setAnimationSpeed(parseFloat(e.target.value))}
                           className="input"
-                          style={{ width: '100%' }}
+                          min="1"
+                          max="60"
                         />
                       </div>
                       <div>
-                        <label style={{ display: 'block', marginBottom: 'var(--space-1)', fontSize: 'var(--font-size-sm)' }}>
-                          Y Position: {colorStop.y.toFixed(1)}%
-                        </label>
-                        <input
-                          type="range"
-                          min="0"
-                          max="100"
-                          step="0.1"
-                          value={colorStop.y}
-                          onChange={(e) => handlePositionChange(index, 'y', parseFloat(e.target.value))}
-                          className="input"
-                          style={{ width: '100%' }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                  {colorStops.length < 5 && (
-                    <button 
-                      onClick={addColor}
-                      className="button"
-                      style={{ marginTop: 'var(--space-2)' }}
-                    >
-                      Add Color
-                    </button>
-                  )}
-                </div>
-                
-                <div style={{ marginBottom: 'var(--space-5)' }}>
-                  <h3 style={{ marginBottom: 'var(--space-3)' }}>Animation</h3>
-                  <div style={{ marginBottom: 'var(--space-3)' }}>
-                    <select 
-                      className="input"
-                      value={isAnimated ? 'animated' : 'static'}
-                      onChange={(e) => setIsAnimated(e.target.value === 'animated')}
-                    >
-                      <option value="static">Static</option>
-                      <option value="animated">Animated</option>
-                    </select>
-                  </div>
-                  
-                  {isAnimated && (
-                    <>
-                      <div style={{ marginBottom: 'var(--space-3)' }}>
-                        <label style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--font-size-sm)' }}>
-                          Animation Type
-                        </label>
-                        <select 
-                          className="input"
+                        <label className="text-sm">Type</label>
+                        <select
                           value={animationType}
                           onChange={(e) => setAnimationType(e.target.value)}
+                          className="input"
                         >
-                          {animationTypes.map((type) => (
-                            <option key={type.value} value={type.value}>
-                              {type.label}
-                            </option>
-                          ))}
+                          <option value="linear">Linear</option>
+                          <option value="ease">Ease</option>
+                          <option value="ease-in">Ease In</option>
+                          <option value="ease-out">Ease Out</option>
+                          <option value="ease-in-out">Ease In Out</option>
                         </select>
                       </div>
-                    
-                    <div>
-                      <label style={{ display: 'block', marginBottom: 'var(--space-1)', fontSize: 'var(--font-size-sm)' }}>
-                        Animation Speed: {animationSpeed}s
-                      </label>
-                      <input
-                        type="range"
-                        min="5"
-                        max="30"
-                        value={animationSpeed}
-                        onChange={(e) => setAnimationSpeed(parseInt(e.target.value))}
-                        className="input"
-                        style={{ width: '100%' }}
-                      />
                     </div>
-                  </>
-                )}
-                </div>
-                
-                <div style={{ marginBottom: 'var(--space-5)' }}>
-                  <h3 style={{ marginBottom: 'var(--space-3)' }}>Download Options</h3>
-                  <select 
-                    className="input"
-                    value={downloadSize}
-                    onChange={(e) => setDownloadSize(e.target.value)}
-                    style={{ marginBottom: 'var(--space-3)' }}
-                  >
-                    <option value="small">Small (640×360)</option>
-                    <option value="medium">Medium (1280×720)</option>
-                    <option value="large">Large (1920×1080)</option>
-                    <option value="extraLarge">Extra Large (3840×2160)</option>
-                  </select>
-                  
-                  <button 
-                    onClick={downloadGradient}
-                    className="button"
-                    style={{ width: '100%', marginBottom: 'var(--space-3)' }}
-                  >
-                    Download Gradient Image
-                  </button>
-                </div>
-                
-                <button 
-                  onClick={copyToClipboard}
-                  className="button"
-                  style={{ width: '100%' }}
-                >
-                  Copy CSS to Clipboard
-                </button>
-              </div>
-            </div>
-            
-            <div className="card">
-              <div className="card-header">
-                <div className="card-title">Gradient Preview</div>
-              </div>
-              
-              <div style={{ marginTop: 'var(--space-5)' }}>
-                <div
-                  ref={previewRef}
-                  style={{
-                    height: '200px',
-                    borderRadius: 'var(--radius-md)',
-                    marginBottom: 'var(--space-5)',
-                    background: getPreviewBackground(),
-                    backgroundSize: isAnimated && animationType === 'slide' ? '200% 200%' : '100% 100%',
-                    animation: isAnimated 
-                      ? `gradient${animationType.charAt(0).toUpperCase() + animationType.slice(1)}Animation ${animationSpeed}s ease infinite` 
-                      : 'none',
-                    position: 'relative',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {isAnimated && animationType === 'rotate' && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '-50%',
-                      left: '-50%',
-                      width: '200%',
-                      height: '200%',
-                      background: getPreviewBackground(),
-                      animation: `gradientRotateAnimation ${animationSpeed}s linear infinite`,
-                    }}></div>
                   )}
                 </div>
-                
-                <h3 style={{ marginBottom: 'var(--space-3)' }}>Visual Editor</h3>
-                <p style={{ marginBottom: 'var(--space-2)', color: 'var(--color-text-secondary)', fontSize: 'var(--font-size-sm)' }}>
-                  {colorStops.length < 5 ? 'Click to add colors. ' : ''}
-                  Drag to reposition points.
-                </p>
-                
-                <div
-                  ref={editorRef}
-                  style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '200px',
-                    marginBottom: 'var(--space-5)',
-                    backgroundColor: 'var(--color-bg-tertiary)',
-                    borderRadius: 'var(--radius-md)',
-                    background: getPreviewBackground(),
-                    cursor: colorStops.length < 5 ? 'crosshair' : 'default',
-                  }}
-                  onClick={handleEditorClick}
-                  onMouseMove={handleEditorMouseMove}
-                  onMouseUp={handleEditorMouseUp}
-                  onMouseLeave={handleEditorMouseUp}
-                >
-                  {colorStops.map((stop, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        position: 'absolute',
-                        top: `${stop.y}%`,
-                        left: `${stop.x}%`,
-                        transform: 'translate(-50%, -50%)',
-                        width: '20px',
-                        height: '20px',
-                        backgroundColor: stop.color,
-                        border: index === selectedColorIndex ? '3px solid white' : '2px solid white',
-                        borderRadius: '50%',
-                        cursor: 'move',
-                        zIndex: index === selectedColorIndex ? 10 : 1,
-                        boxShadow: '0 0 5px rgba(0,0,0,0.5)'
-                      }}
-                      onMouseDown={(e) => handleColorPointMouseDown(e, index)}
-                    />
-                  ))}
-                </div>
-                
-                <style>
-                  {`
-                  @keyframes gradientSlideAnimation {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                  }
-                  @keyframes gradientZoomAnimation {
-                    0% { background-size: 100% 100%; }
-                    50% { background-size: 200% 200%; }
-                    100% { background-size: 100% 100%; }
-                  }
-                  @keyframes gradientRotateAnimation {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                  }
-                  @keyframes gradientPulseAnimation {
-                    0% { opacity: 1; }
-                    50% { opacity: 0.7; }
-                    100% { opacity: 1; }
-                  }
-                  `}
-                </style>
-                
-                <h3 style={{ marginBottom: 'var(--space-3)' }}>CSS Code</h3>
-                <div
-                  style={{
-                    backgroundColor: 'var(--color-bg-tertiary)',
-                    padding: 'var(--space-4)',
-                    borderRadius: 'var(--radius-md)',
-                    fontFamily: 'monospace',
-                    fontSize: 'var(--font-size-sm)',
-                    whiteSpace: 'pre-wrap',
-                    overflowX: 'auto',
-                  }}
-                >
-                  {cssCode}
+
+                {/* Export Options */}
+                <div>
+                  <h3>Export</h3>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 1fr', 
+                    gap: 'var(--space-2)',
+                    marginTop: 'var(--space-2)'
+                  }}>
+                    <button onClick={copyToClipboard} className="button">
+                      Copy CSS
+                    </button>
+                    <button onClick={downloadGradient} className="button">
+                      Download
+                    </button>
+                    <select
+                      value={downloadSize}
+                      onChange={(e) => setDownloadSize(e.target.value)}
+                      className="input"
+                      style={{ gridColumn: 'span 2' }}
+                    >
+                      <option value="small">Small (640×360)</option>
+                      <option value="medium">Medium (1280×720)</option>
+                      <option value="large">Large (1920×1080)</option>
+                      <option value="extraLarge">4K (3840×2160)</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
