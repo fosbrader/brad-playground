@@ -6,37 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brad's Playground</title>
     
-    <!-- Counter.dev Analytics (simplified) -->
-    <script>
-      // Simplified counter.dev implementation
-      document.addEventListener('DOMContentLoaded', function() {
-        // Load the counter script dynamically
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://cdn.counter.dev/script.js';
-        script.setAttribute('data-id', '757bceaa-78cc-4493-808d-010a1f6d38c5');
-        script.setAttribute('data-utcoffset', '-7');
-        document.head.appendChild(script);
-        
-        // Track SPA page changes
-        let lastPath = location.pathname;
-        setInterval(function() {
-          if (location.pathname !== lastPath) {
-            lastPath = location.pathname;
-            // Force a new page view count
-            var newScript = document.createElement('script');
-            newScript.async = true;
-            newScript.src = 'https://cdn.counter.dev/script.js?page=' + 
-                           encodeURIComponent(location.pathname) + 
-                           '&t=' + Date.now();
-            newScript.setAttribute('data-id', '757bceaa-78cc-4493-808d-010a1f6d38c5');
-            newScript.setAttribute('data-utcoffset', '-7');
-            document.head.appendChild(newScript);
-            console.log('Counter.dev page view tracked for:', location.pathname);
-          }
-        }, 300);
-      });
-    </script>
+    <!-- Analytics disabled - counter.dev appears to be inactive or unreachable -->
     
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
