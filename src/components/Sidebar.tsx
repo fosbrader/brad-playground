@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { APP_VERSION } from '../config/version';
 
 // SVG Icons as components
@@ -43,6 +43,8 @@ const SpeechIcon = () => (
 );
 
 export default function Sidebar() {
+  const location = useLocation();
+  
   return (
     <div className="sidebar" style={{ backgroundColor: '#1e293b' }}>
       <div className="sidebar-header" style={{ 
@@ -65,37 +67,54 @@ export default function Sidebar() {
         <div className="sidebar-version">Version {APP_VERSION}</div>
       </div>
 
-      <div className="sidebar-nav" style={{ marginBottom: 'var(--space-5)' }}>
-        <Link to="/" className="sidebar-item">
-          <span className="sidebar-item-icon"><DashboardIcon /></span>
-          Dashboard
-        </Link>
-      </div>
-
       <div className="sidebar-section">
-        <div className="sidebar-section-title">IMAGE TOOLS</div>
+        <div className="sidebar-section-title">Pinned Tools</div>
         <div className="sidebar-nav">
-          <Link to="/tools/gradient" className="sidebar-item">
-            <span className="sidebar-item-icon"><GradientIcon /></span>
-            Gradient Generator
-          </Link>
-          <Link to="/tools/text-on-screen" className="sidebar-item">
-            <span className="sidebar-item-icon"><TextIcon /></span>
-            Text on Screen Generator
+          <Link
+            to="/"
+            className={`sidebar-item ${location.pathname === '/' ? 'active' : ''}`}
+          >
+            <span className="sidebar-item-icon"><DashboardIcon /></span>
+            Dashboard
           </Link>
         </div>
       </div>
 
       <div className="sidebar-section">
-        <div className="sidebar-section-title">AI TOOLS</div>
+        <div className="sidebar-section-title">Image Tools</div>
         <div className="sidebar-nav">
-          <Link to="/tools/translator" className="sidebar-item">
-            <span className="sidebar-item-icon"><TranslateIcon /></span>
-            Translator
+          <Link
+            to="/tools/text"
+            className={`sidebar-item ${location.pathname === '/tools/text' ? 'active' : ''}`}
+          >
+            <span className="sidebar-item-icon"><TextIcon /></span>
+            Text Generator
           </Link>
-          <Link to="/tools/text-to-speech" className="sidebar-item">
+        </div>
+      </div>
+
+      <div className="sidebar-section">
+        <div className="sidebar-section-title">Design Tools</div>
+        <div className="sidebar-nav">
+          <Link
+            to="/tools/gradient"
+            className={`sidebar-item ${location.pathname === '/tools/gradient' ? 'active' : ''}`}
+          >
+            <span className="sidebar-item-icon"><GradientIcon /></span>
+            Gradient Generator
+          </Link>
+        </div>
+      </div>
+
+      <div className="sidebar-section">
+        <div className="sidebar-section-title">AI Tools</div>
+        <div className="sidebar-nav">
+          <Link
+            to="/tools/ai/chat"
+            className={`sidebar-item ${location.pathname === '/tools/ai/chat' ? 'active' : ''}`}
+          >
             <span className="sidebar-item-icon"><SpeechIcon /></span>
-            Text to Speech
+            AI Chat
           </Link>
         </div>
       </div>
