@@ -621,32 +621,6 @@ animation: gradientAnimation ${animationSpeed}s ease infinite;
     setSelectedPreset('custom');
   };
 
-  // Handle mouse down on color point in the visual editor
-  const handleColorPointMouseDown = (e: MouseEvent, index: number) => {
-    e.preventDefault();
-    setSelectedColorIndex(index);
-    setIsDragging(true);
-  };
-
-  // Handle mouse move for dragging
-  const handleEditorMouseMove = (e: MouseEvent) => {
-    if (!isDragging || selectedColorIndex === null || !editorRef.current) return;
-    
-    const rect = editorRef.current.getBoundingClientRect();
-    const x = Math.min(Math.max(0, ((e.clientX - rect.left) / rect.width) * 100), 100);
-    const y = Math.min(Math.max(0, ((e.clientY - rect.top) / rect.height) * 100), 100);
-    
-    const newColorStops = [...colorStops];
-    newColorStops[selectedColorIndex] = { ...newColorStops[selectedColorIndex], x, y };
-    setColorStops(newColorStops);
-    setSelectedPreset('custom');
-  };
-
-  // Handle mouse up to stop dragging
-  const handleEditorMouseUp = () => {
-    setIsDragging(false);
-  };
-
   // Add a new color at the clicked position
   const handleEditorClick = (e: MouseEvent) => {
     if (isDragging || !editorRef.current || colorStops.length >= 5) return;
@@ -719,25 +693,6 @@ animation: gradientAnimation ${animationSpeed}s ease infinite;
     navigator.clipboard.writeText(cssCode);
     alert('CSS copied to clipboard!');
   };
-
-  // Direction options (for linear gradients)
-  const directions = [
-    { value: 'to right', label: 'Left to Right' },
-    { value: 'to left', label: 'Right to Left' },
-    { value: 'to bottom', label: 'Top to Bottom' },
-    { value: 'to top', label: 'Bottom to Top' },
-    { value: '45deg', label: 'Diagonal ↘' },
-    { value: '135deg', label: 'Diagonal ↗' },
-    { value: '225deg', label: 'Diagonal ↖' },
-    { value: '315deg', label: 'Diagonal ↙' },
-  ];
-
-  // Gradient type options
-  const gradientTypes = [
-    { value: 'linear', label: 'Linear' },
-    { value: 'radial', label: 'Radial' },
-    { value: 'conic', label: 'Conic' },
-  ];
 
   // Get the background style for the preview
   const getPreviewBackground = () => {
