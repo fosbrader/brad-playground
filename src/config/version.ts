@@ -2,4 +2,4 @@
  * Application version tracking
  * Increment this number whenever changes are pushed to production
  */
-export const APP_VERSION = '1.0.4'; 
+export const APP_VERSION = '1.1.0'; 
