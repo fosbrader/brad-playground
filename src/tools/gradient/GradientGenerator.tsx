@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, MouseEvent } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import Sidebar from '../../components/Sidebar';
 
@@ -30,10 +30,7 @@ export default function GradientGenerator() {
   const [animationType, setAnimationType] = useState('slide');
   const [selectedPreset, setSelectedPreset] = useState('default');
   const [downloadSize, setDownloadSize] = useState('medium');
-  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
-  const editorRef = useRef<HTMLDivElement>(null);
 
   // Define preset color combinations
   const presets = {
@@ -512,12 +509,7 @@ export default function GradientGenerator() {
   };
 
   // Animation types
-  const animationTypes = [
-    { value: 'slide', label: 'Slide' },
-    { value: 'zoom', label: 'Zoom' },
-    { value: 'rotate', label: 'Rotate' },
-    { value: 'pulse', label: 'Pulse' },
-  ];
+  // const animationTypes = [...];
 
   // Update the CSS code when gradient settings change
   useEffect(() => {
@@ -622,25 +614,7 @@ animation: gradientAnimation ${animationSpeed}s ease infinite;
   };
 
   // Add a new color at the clicked position
-  const handleEditorClick = (e: MouseEvent) => {
-    if (isDragging || !editorRef.current || colorStops.length >= 5) return;
-    
-    const rect = editorRef.current.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    
-    // Don't add if clicked very close to an existing point
-    const isNearExistingPoint = colorStops.some(stop => {
-      const dx = stop.x - x;
-      const dy = stop.y - y;
-      return Math.sqrt(dx * dx + dy * dy) < 5;
-    });
-    
-    if (!isNearExistingPoint) {
-      setColorStops([...colorStops, { color: '#ffffff', x, y }]);
-      setSelectedPreset('custom');
-    }
-  };
+  // const handleEditorClick = (e: MouseEvent) => {...};
 
   // Add a new color
   const addColor = () => {

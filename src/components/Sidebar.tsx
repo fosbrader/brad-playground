@@ -3,42 +3,32 @@ import { APP_VERSION } from '../config/version';
 
 // SVG Icons as components
 const DashboardIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="9" />
-    <rect x="14" y="3" width="7" height="5" />
-    <rect x="14" y="12" width="7" height="9" />
-    <rect x="3" y="16" width="7" height="5" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="7" height="7"></rect>
+    <rect x="14" y="3" width="7" height="7"></rect>
+    <rect x="14" y="14" width="7" height="7"></rect>
+    <rect x="3" y="14" width="7" height="7"></rect>
   </svg>
 );
 
 const GradientIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" />
-    <path d="M8 12a4 4 0 0 1 8 0" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+    <line x1="12" y1="3" x2="12" y2="21"></line>
   </svg>
 );
 
 const TextIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="4 7 4 4 20 4 20 7" />
-    <line x1="9" y1="20" x2="15" y2="20" />
-    <line x1="12" y1="4" x2="12" y2="20" />
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="4 7 4 4 20 4 20 7"></polyline>
+    <line x1="9" y1="20" x2="15" y2="20"></line>
+    <line x1="12" y1="4" x2="12" y2="20"></line>
   </svg>
 );
 
-const TranslateIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 8l4 4l-4 4" />
-    <path d="M12 4h7a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-7" />
-  </svg>
-);
-
-const SpeechIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-    <line x1="12" y1="19" x2="12" y2="23" />
-    <line x1="8" y1="23" x2="16" y2="23" />
+const AIIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a10 10 0 1 0 10 10H12V2zM21.17 8H12V4.83L21.17 8zM12 12h10a10 10 0 0 1-10 10V12z"></path>
   </svg>
 );
 
@@ -113,7 +103,7 @@ export default function Sidebar() {
             to="/tools/ai/chat"
             className={`sidebar-item ${location.pathname === '/tools/ai/chat' ? 'active' : ''}`}
           >
-            <span className="sidebar-item-icon"><SpeechIcon /></span>
+            <span className="sidebar-item-icon"><AIIcon /></span>
             AI Chat
           </Link>
         </div>
