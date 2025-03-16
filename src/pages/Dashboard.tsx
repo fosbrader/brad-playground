@@ -91,7 +91,7 @@ export default function Dashboard() {
         {/* Header */}
         <header className="navbar">
           <div>
-            <h1 className="navbar-title" style={{ marginBottom: 'var(--space-2)' }}>Analytics Dashboard</h1>
+            <h1 className="navbar-title" style={{ marginBottom: 'var(--space-2)' }}>Pinned Tools</h1>
             <div className="navbar-welcome">Welcome back, Brad! We've missed you. 👋</div>
           </div>
           
@@ -123,55 +123,59 @@ export default function Dashboard() {
 
         {/* Content */}
         <main className="content">
-          {/* Stats Section */}
+          {/* Pinned Tools Section */}
           <div className="dashboard-grid grid-4">
-            <div className="card">
+            <Link to="/tools/gradient" className="card">
               <div className="card-header">
-                <div className="card-title">Visitors</div>
-                <div className="card-badge">Annual</div>
+                <div className="card-title">Gradient Generator</div>
+                <div className="card-badge">Image Tool</div>
               </div>
-              <div className="stat-value">0</div>
+              <div className="stat-value">
+                <GradientIcon />
+              </div>
               <div className="stat-label">
-                Since last week
-                <span className="stat-change stat-change-positive">+14%</span>
+                Create beautiful CSS gradients with a visual editor
               </div>
-            </div>
+            </Link>
             
-            <div className="card">
+            <Link to="/tools/text-on-screen" className="card">
               <div className="card-header">
-                <div className="card-title">Activity</div>
-                <div className="card-badge">Annual</div>
+                <div className="card-title">Text Generator</div>
+                <div className="card-badge">Image Tool</div>
               </div>
-              <div className="stat-value">0</div>
+              <div className="stat-value">
+                <TextIcon />
+              </div>
               <div className="stat-label">
-                Since last week
-                <span className="stat-change stat-change-negative">-12%</span>
+                Create images with custom text overlays
               </div>
-            </div>
+            </Link>
             
-            <div className="card">
+            <Link to="/tools/translator" className="card">
               <div className="card-header">
-                <div className="card-title">Real-Time</div>
-                <div className="card-badge card-badge-primary">Monthly</div>
+                <div className="card-title">Translator</div>
+                <div className="card-badge card-badge-primary">AI Tool</div>
               </div>
-              <div className="stat-value">0</div>
+              <div className="stat-value">
+                <TranslateIcon />
+              </div>
               <div className="stat-label">
-                Since last week
-                <span className="stat-change stat-change-negative">-18%</span>
+                Translate text between multiple languages
               </div>
-            </div>
+            </Link>
             
-            <div className="card">
+            <Link to="/tools/text-to-speech" className="card">
               <div className="card-header">
-                <div className="card-title">Bounce</div>
-                <div className="card-badge card-badge-success">Yearly</div>
+                <div className="card-title">Text to Speech</div>
+                <div className="card-badge card-badge-primary">AI Tool</div>
               </div>
-              <div className="stat-value">0</div>
+              <div className="stat-value">
+                <SpeechIcon />
+              </div>
               <div className="stat-label">
-                Since last week
-                <span className="stat-change stat-change-positive">+27%</span>
+                Convert text to natural-sounding speech
               </div>
-            </div>
+            </Link>
           </div>
           
           {/* Tools Section */}

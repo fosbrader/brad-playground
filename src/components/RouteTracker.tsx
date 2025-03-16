@@ -9,13 +9,30 @@ export default function RouteTracker() {
   const location = useLocation();
 
   useEffect(() => {
-    // Just log page views to console for development
-    console.log('Page view:', location.pathname);
+    // Track page views with counter.dev
+    const script = document.createElement('script');
+    script.async = true;
+    script.dataset.counterDev = "https://counter.dev/";
+    script.dataset.id = "d4c8a8c8-c7d3-4c7c-9f8c-8c7d3c7c9f8c";
+    script.dataset.utcoffset = "-5";
     
-    // For production, you might want to implement:
-    // 1. Local storage analytics collection
-    // 2. Self-hosted analytics solution
-    // 3. Privacy-focused analytics like Plausible, SimpleAnalytics, etc.
+    // Add current page path and timestamp to prevent caching
+    const timestamp = new Date().getTime();
+    script.src = `https://counter.dev/track.js?page=${location.pathname}&t=${timestamp}`;
+    
+    document.body.appendChild(script);
+    
+    // Remove script after 2 seconds to keep DOM clean
+    const timeoutId = setTimeout(() => {
+      document.body.removeChild(script);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
   }, [location]);
 
   // This component doesn't render anything
