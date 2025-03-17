@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import TextGenerator from './tools/text/TextGenerator';
 import GradientGenerator from './tools/gradient/GradientGenerator';
+import Snake from './tools/snake/Snake';
 import './App.css';
 
 function AppRoutes() {
@@ -15,6 +16,7 @@ function AppRoutes() {
       <Route path="/" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="/tools/text" element={isAuthenticated ? <TextGenerator /> : <Navigate to="/login" />} />
       <Route path="/tools/gradient" element={isAuthenticated ? <GradientGenerator /> : <Navigate to="/login" />} />
+      <Route path="/tools/snake" element={isAuthenticated ? <Snake /> : <Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

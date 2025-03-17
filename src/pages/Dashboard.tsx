@@ -18,6 +18,14 @@ const TextIcon = () => (
   </svg>
 );
 
+const GameIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="4" width="20" height="16" rx="2" />
+    <circle cx="12" cy="12" r="3" />
+    <path d="M20 12H4" />
+  </svg>
+);
+
 const TranslateIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M5 8l4 4l-4 4" />
@@ -51,6 +59,14 @@ const tools = [
     path: '/tools/text',
     icon: <TextIcon />,
     category: 'Image Tools'
+  },
+  {
+    id: 'snake',
+    name: 'Snake Game',
+    description: 'Classic snake game with a modern twist',
+    path: '/tools/snake',
+    icon: <GameIcon />,
+    category: 'Games'
   },
   {
     id: 'translator',
@@ -190,6 +206,23 @@ export default function Dashboard() {
               </div>
               <div className="stat-label">
                 Create images with custom text overlays
+              </div>
+            </Link>
+            
+            <Link to="/tools/snake" className="card">
+              <div style={{ position: 'relative' }}>
+                <div style={{ marginBottom: 'var(--space-2)' }}>
+                  <GameIcon />
+                </div>
+                <div className="card-title">Snake Game</div>
+                <div className="card-badge" style={{ 
+                  position: 'absolute',
+                  top: 0,
+                  right: 0
+                }}>Game</div>
+              </div>
+              <div className="stat-label">
+                Classic snake game with a modern twist
               </div>
             </Link>
             
