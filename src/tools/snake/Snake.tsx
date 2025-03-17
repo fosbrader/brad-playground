@@ -127,7 +127,7 @@ export default function Snake() {
     ctx.fillRect(0, 0, GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE);
 
     // Draw snake with rounded segments and gradient
-    snake.forEach(({ x, y }, index) => {
+    snake.forEach(({ x, y }) => {
       ctx.beginPath();
       const centerX = (x + 0.5) * CELL_SIZE;
       const centerY = (y + 0.5) * CELL_SIZE;
