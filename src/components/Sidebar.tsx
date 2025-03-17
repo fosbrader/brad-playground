@@ -32,6 +32,25 @@ const AIIcon = () => (
   </svg>
 );
 
+const GameIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a10 10 0 1 0 10 10H12V2zM21.17 8H12V4.83L21.17 8zM12 12h10a10 10 0 0 1-10 10V12z"></path>
+  </svg>
+);
+
+const TranslateIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15c0 4.42 -3.58 8 -8 8s-8 -3.58 -8 -8 3.58 -8 8 -8 8 3.58 8 8z"></path>
+    <path d="M3 9l9 9 9 -9"></path>
+  </svg>
+);
+
+const SpeechIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2a10 10 0 1 0 10 10H12V2zM21.17 8H12V4.83L21.17 8zM12 12h10a10 10 0 0 1-10 10V12z"></path>
+  </svg>
+);
+
 export default function Sidebar() {
   const location = useLocation();
   
@@ -57,17 +76,14 @@ export default function Sidebar() {
         <div className="sidebar-version">Version {APP_VERSION}</div>
       </div>
 
-      <div className="sidebar-section">
-        <div className="sidebar-section-title">Pinned Tools</div>
-        <div className="sidebar-nav">
-          <Link
-            to="/"
-            className={`sidebar-item ${location.pathname === '/' ? 'active' : ''}`}
-          >
-            <span className="sidebar-item-icon"><DashboardIcon /></span>
-            Dashboard
-          </Link>
-        </div>
+      <div className="sidebar-nav" style={{ marginBottom: 'var(--space-6)' }}>
+        <Link
+          to="/"
+          className={`sidebar-item ${location.pathname === '/' ? 'active' : ''}`}
+        >
+          <span className="sidebar-item-icon"><DashboardIcon /></span>
+          Dashboard
+        </Link>
       </div>
 
       <div className="sidebar-section">
@@ -80,12 +96,6 @@ export default function Sidebar() {
             <span className="sidebar-item-icon"><TextIcon /></span>
             Text Generator
           </Link>
-        </div>
-      </div>
-
-      <div className="sidebar-section">
-        <div className="sidebar-section-title">Design Tools</div>
-        <div className="sidebar-nav">
           <Link
             to="/tools/gradient"
             className={`sidebar-item ${location.pathname === '/tools/gradient' ? 'active' : ''}`}
@@ -97,14 +107,34 @@ export default function Sidebar() {
       </div>
 
       <div className="sidebar-section">
+        <div className="sidebar-section-title">Games</div>
+        <div className="sidebar-nav">
+          <Link
+            to="/tools/snake"
+            className={`sidebar-item ${location.pathname === '/tools/snake' ? 'active' : ''}`}
+          >
+            <span className="sidebar-item-icon"><GameIcon /></span>
+            Snake Game
+          </Link>
+        </div>
+      </div>
+
+      <div className="sidebar-section">
         <div className="sidebar-section-title">AI Tools</div>
         <div className="sidebar-nav">
           <Link
-            to="/tools/ai/chat"
-            className={`sidebar-item ${location.pathname === '/tools/ai/chat' ? 'active' : ''}`}
+            to="/tools/translator"
+            className={`sidebar-item ${location.pathname === '/tools/translator' ? 'active' : ''}`}
           >
-            <span className="sidebar-item-icon"><AIIcon /></span>
-            AI Chat
+            <span className="sidebar-item-icon"><TranslateIcon /></span>
+            Translator
+          </Link>
+          <Link
+            to="/tools/text-to-speech"
+            className={`sidebar-item ${location.pathname === '/tools/text-to-speech' ? 'active' : ''}`}
+          >
+            <span className="sidebar-item-icon"><SpeechIcon /></span>
+            Text to Speech
           </Link>
         </div>
       </div>
