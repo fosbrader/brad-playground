@@ -4,17 +4,18 @@ import Sidebar from '../../components/Sidebar';
 type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 type Position = { x: number; y: number };
 
-const GRID_SIZE = 20;
-const CELL_SIZE = 20;
-const INITIAL_SNAKE = [{ x: 10, y: 10 }];
+const GRID_SIZE = 40;
+const CELL_SIZE = 15;
+const SNAKE_RADIUS = CELL_SIZE / 2;
+const INITIAL_SNAKE = [{ x: 20, y: 20 }];
 const INITIAL_DIRECTION: Direction = 'RIGHT';
-const GAME_SPEED = 100;
+const GAME_SPEED = 50;
 
 export default function Snake() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [snake, setSnake] = useState<Position[]>(INITIAL_SNAKE);
   const [direction, setDirection] = useState<Direction>(INITIAL_DIRECTION);
-  const [food, setFood] = useState<Position>({ x: 15, y: 15 });
+  const [food, setFood] = useState<Position>({ x: 25, y: 25 });
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -81,6 +82,11 @@ export default function Snake() {
   // Handle keyboard input
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Prevent arrow keys from scrolling the page
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+        e.preventDefault();
+      }
+
       if (e.key === ' ') {
         setIsPaused(prev => !prev);
         return;
@@ -120,25 +126,60 @@ export default function Snake() {
     ctx.fillStyle = '#1a1a1a';
     ctx.fillRect(0, 0, GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE);
 
-    // Draw snake
-    ctx.fillStyle = '#4ade80';
-    snake.forEach(({ x, y }) => {
-      ctx.fillRect(
-        x * CELL_SIZE,
-        y * CELL_SIZE,
-        CELL_SIZE - 1,
-        CELL_SIZE - 1
+    // Draw snake with rounded segments and gradient
+    snake.forEach(({ x, y }, index) => {
+      ctx.beginPath();
+      const centerX = (x + 0.5) * CELL_SIZE;
+      const centerY = (y + 0.5) * CELL_SIZE;
+      
+      // Create gradient for each segment
+      const gradient = ctx.createRadialGradient(
+        centerX, centerY, 0,
+        centerX, centerY, SNAKE_RADIUS
       );
+      gradient.addColorStop(0, '#6ee7b7'); // Lighter center
+      gradient.addColorStop(1, '#4ade80'); // Darker edge
+      
+      ctx.fillStyle = gradient;
+      ctx.arc(centerX, centerY, SNAKE_RADIUS * 0.9, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Add highlight effect
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.arc(
+        centerX - SNAKE_RADIUS * 0.3,
+        centerY - SNAKE_RADIUS * 0.3,
+        SNAKE_RADIUS * 0.4,
+        0,
+        Math.PI * 2
+      );
+      ctx.fill();
     });
 
-    // Draw food
-    ctx.fillStyle = '#f87171';
-    ctx.fillRect(
-      food.x * CELL_SIZE,
-      food.y * CELL_SIZE,
-      CELL_SIZE - 1,
-      CELL_SIZE - 1
+    // Draw food with glow effect
+    ctx.beginPath();
+    const foodCenterX = (food.x + 0.5) * CELL_SIZE;
+    const foodCenterY = (food.y + 0.5) * CELL_SIZE;
+
+    // Add glow
+    ctx.shadowColor = '#f87171';
+    ctx.shadowBlur = 15;
+    
+    // Create gradient for food
+    const foodGradient = ctx.createRadialGradient(
+      foodCenterX, foodCenterY, 0,
+      foodCenterX, foodCenterY, SNAKE_RADIUS
     );
+    foodGradient.addColorStop(0, '#fca5a5');
+    foodGradient.addColorStop(1, '#f87171');
+    
+    ctx.fillStyle = foodGradient;
+    ctx.arc(foodCenterX, foodCenterY, SNAKE_RADIUS * 0.8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Reset shadow
+    ctx.shadowBlur = 0;
   }, [snake, food]);
 
   const generateFood = (currentSnake: Position[]) => {
@@ -178,66 +219,112 @@ export default function Snake() {
           flexDirection: 'column',
           alignItems: 'center',
           gap: 'var(--space-4)',
-          paddingTop: 'var(--space-8)'
+          paddingTop: 'var(--space-4)',
+          height: 'calc(100vh - 64px)', // Account for header height
+          overflow: 'hidden'
         }}>
-          <div className="card" style={{
-            padding: 'var(--space-4)',
+          <div style={{
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 'var(--space-4)'
+            gap: 'var(--space-4)',
+            width: '100%',
+            height: '100%',
+            maxWidth: '1200px',
+            alignItems: 'flex-start',
+            padding: 'var(--space-4)'
           }}>
-            <div style={{ 
-              fontSize: 'var(--font-size-lg)',
-              marginBottom: 'var(--space-2)'
+            <div className="card" style={{
+              padding: 'var(--space-4)',
+              textAlign: 'left',
+              width: '250px',
+              height: 'fit-content'
             }}>
-              Score: {score}
+              <h3 style={{ marginBottom: 'var(--space-4)' }}>How to Play</h3>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: 'var(--space-3)'
+              }}>
+                <div>
+                  <strong>Controls</strong>
+                  <p>↑ Up arrow</p>
+                  <p>↓ Down arrow</p>
+                  <p>← Left arrow</p>
+                  <p>→ Right arrow</p>
+                  <p>Space to pause/resume</p>
+                </div>
+                <div>
+                  <strong>Objective</strong>
+                  <p>Collect the red orbs to grow and score points</p>
+                  <p>Avoid hitting the walls or yourself!</p>
+                </div>
+              </div>
             </div>
 
-            <canvas
-              ref={canvasRef}
-              width={GRID_SIZE * CELL_SIZE}
-              height={GRID_SIZE * CELL_SIZE}
-              style={{
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: 'var(--radius-md)',
-              }}
-            />
-
-            {(gameOver || isPaused) && (
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                textAlign: 'center',
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                padding: 'var(--space-4)',
-                borderRadius: 'var(--radius-md)',
-                backdropFilter: 'blur(8px)'
+            <div className="card" style={{
+              padding: 'var(--space-4)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 'var(--space-4)',
+              flex: 1,
+              position: 'relative',
+              height: '100%',
+              maxHeight: 'calc(100vh - 96px)' // Account for header and padding
+            }}>
+              <div style={{ 
+                fontSize: 'var(--font-size-lg)',
+                marginBottom: 'var(--space-2)'
               }}>
-                <h2>{gameOver ? 'Game Over!' : 'Paused'}</h2>
-                {gameOver && <p>Final Score: {score}</p>}
-                <button
-                  className="btn btn-primary"
-                  onClick={gameOver ? resetGame : () => setIsPaused(false)}
-                  style={{ marginTop: 'var(--space-2)' }}
-                >
-                  {gameOver ? 'Play Again' : 'Resume'}
-                </button>
+                Score: {score}
               </div>
-            )}
-          </div>
 
-          <div className="card" style={{
-            padding: 'var(--space-4)',
-            textAlign: 'center'
-          }}>
-            <h3 style={{ marginBottom: 'var(--space-2)' }}>How to Play</h3>
-            <p>Use arrow keys to control the snake</p>
-            <p>Press space to pause/resume</p>
-            <p>Collect the red squares to grow and score points</p>
-            <p>Don't hit the walls or yourself!</p>
+              <div style={{
+                width: '100%',
+                height: 'calc(100% - 40px)', // Account for score display
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative'
+              }}>
+                <canvas
+                  ref={canvasRef}
+                  width={GRID_SIZE * CELL_SIZE}
+                  height={GRID_SIZE * CELL_SIZE}
+                  style={{
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 'var(--radius-md)',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
+
+              {(gameOver || isPaused) && (
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  textAlign: 'center',
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  padding: 'var(--space-4)',
+                  borderRadius: 'var(--radius-md)',
+                  backdropFilter: 'blur(8px)'
+                }}>
+                  <h2>{gameOver ? 'Game Over!' : 'Paused'}</h2>
+                  {gameOver && <p>Final Score: {score}</p>}
+                  <button
+                    className="btn btn-primary"
+                    onClick={gameOver ? resetGame : () => setIsPaused(false)}
+                    style={{ marginTop: 'var(--space-2)' }}
+                  >
+                    {gameOver ? 'Play Again' : 'Resume'}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </main>
       </div>

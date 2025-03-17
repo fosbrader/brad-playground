@@ -225,40 +225,6 @@ export default function Dashboard() {
                 Classic snake game with a modern twist
               </div>
             </Link>
-            
-            <Link to="/tools/translator" className="card">
-              <div style={{ position: 'relative' }}>
-                <div style={{ marginBottom: 'var(--space-2)' }}>
-                  <TranslateIcon />
-                </div>
-                <div className="card-title">Translator</div>
-                <div className="card-badge card-badge-primary" style={{ 
-                  position: 'absolute',
-                  top: 0,
-                  right: 0
-                }}>AI Tool</div>
-              </div>
-              <div className="stat-label">
-                Translate text between multiple languages
-              </div>
-            </Link>
-            
-            <Link to="/tools/text-to-speech" className="card">
-              <div style={{ position: 'relative' }}>
-                <div style={{ marginBottom: 'var(--space-2)' }}>
-                  <SpeechIcon />
-                </div>
-                <div className="card-title">Text to Speech</div>
-                <div className="card-badge card-badge-primary" style={{ 
-                  position: 'absolute',
-                  top: 0,
-                  right: 0
-                }}>AI Tool</div>
-              </div>
-              <div className="stat-label">
-                Convert text to natural-sounding speech
-              </div>
-            </Link>
           </div>
           
           {/* Tools Section */}
